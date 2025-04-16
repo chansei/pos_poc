@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Order from "./pages/Order";
 import Kitchen from "./pages/Kitchen";
 import CallScreen from "./pages/CallScreen";
+import Settings from "./pages/Settings";
+import Menu from "./pages/Menu";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/kitchen" element={<Kitchen />} />
         <Route path="/call" element={<CallScreen />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>
   );

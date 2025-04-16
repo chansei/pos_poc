@@ -25,12 +25,6 @@ def get_db():
         db.close()
 
 
-@router.get("/menu")
-def get_menu(db: Session = Depends(get_db)):
-    items = db.query(Menu).all()
-    return jsonable_encoder(items)
-
-
 @router.post("/order")
 def create_order(payload: dict, db: Session = Depends(get_db)):
     items = payload.get("items")

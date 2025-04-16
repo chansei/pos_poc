@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     Container, Typography, Box, Grid, Card, CardContent,
-    CardActions, Button, Stack, TextField
+    CardActions, Button, Stack, TextField, Paper
 } from "@mui/material";
 import axios from "axios";
 import NavigationBar from "../components/NavigationBar";
@@ -13,7 +13,6 @@ const OrderForm = () => {
     const [cash, setCash] = useState("");
     const [change, setChange] = useState(null);
 
-    // ✅ Toast 状態
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [toastSeverity, setToastSeverity] = useState("info");
@@ -28,6 +27,16 @@ const OrderForm = () => {
             setQuantities(initQuantities);
         });
     }, []);
+
+    useEffect(() => {
+        const total = calculateTotal();
+        const val = parseInt(cash);
+        if (!isNaN(val)) {
+            setChange(val - total);
+        } else {
+            setChange(null);
+        }
+    }, [cash]);
 
     const handleQuantityChange = (id, delta) => {
         setQuantities((prev) => ({
@@ -108,36 +117,119 @@ const OrderForm = () => {
                 </Grid>
 
                 <Box sx={{ mt: 4 }}>
-                    <Typography variant="h6">合計金額：¥{total}</Typography>
+                    {/* 行 1 */}
+                    <Grid container spacing={1} sx={{ mt: 1 }}>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "1")}>1</Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "2")}>2</Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "3")}>3</Button>
+                        </Grid>
+                    </Grid>
 
-                    <TextField
-                        label="預かり金"
-                        type="number"
-                        value={cash}
-                        onChange={(e) => {
-                            const val = parseInt(e.target.value);
-                            setCash(e.target.value);
-                            setChange(!isNaN(val) ? val - total : null);
-                        }}
-                        sx={{ mt: 2 }}
-                    />
+                    {/* 行 2 */}
+                    <Grid container spacing={1} sx={{ mt: 1 }}>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "4")}>4</Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "5")}>5</Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "6")}>6</Button>
+                        </Grid>
+                    </Grid>
 
-                    {change !== null && (
-                        <Typography sx={{ mt: 1 }} color={change < 0 ? "error" : "primary"}>
-                            {change < 0 ? "金額が不足しています" : `お釣り：¥${change}`}
-                        </Typography>
-                    )}
+                    {/* 行 3 */}
+                    <Grid container spacing={1} sx={{ mt: 1 }}>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "7")}>7</Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "8")}>8</Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "9")}>9</Button>
+                        </Grid>
+                    </Grid>
 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSubmit}
-                        sx={{ mt: 2 }}
-                        disabled={total === 0}
-                    >
-                        注文を送信
-                    </Button>
+                    {/* 行 4 */}
+                    <Grid container spacing={1} sx={{ mt: 1 }}>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash("")}>AC</Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "0")}>0</Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button fullWidth variant="outlined" onClick={() => setCash(cash.slice(0, -1))}>⌫</Button>
+                        </Grid>
+                    </Grid>
                 </Box>
+
+                <Box sx={{ width: "100%" }}>
+                    <Paper variant="outlined" sx={{ p: 2, width: "100%" }}>
+                        <Grid container spacing={2}>
+                            {/* 合計金額 */}
+                            <Grid item xs={4}>
+                                <Typography variant="subtitle2" color="text.secondary" align="center">
+                                    合計金額
+                                </Typography>
+                                <Typography variant="h6" fontWeight="bold" align="center">
+                                    ¥{calculateTotal()}
+                                </Typography>
+                            </Grid>
+
+                            {/* 預かり金 */}
+                            <Grid item xs={4}>
+                                <Typography variant="subtitle2" color="text.secondary" align="center">
+                                    預かり金
+                                </Typography>
+                                <Typography variant="h6" fontWeight="bold" align="center">
+                                    {cash === "" ? "--" : `¥${cash}`}
+                                </Typography>
+                            </Grid>
+
+                            {/* お釣り */}
+                            <Grid item xs={4}>
+                                <Typography variant="subtitle2" color="text.secondary" align="center">
+                                    お釣り
+                                </Typography>
+                                <Typography
+                                    variant="h6"
+                                    fontWeight="bold"
+                                    align="center"
+                                    color={
+                                        cash === "" || isNaN(parseInt(cash))
+                                            ? "text.disabled"
+                                            : change < 0
+                                                ? "error"
+                                                : "primary"
+                                    }
+                                >
+                                    {cash === "" || isNaN(parseInt(cash))
+                                        ? "--"
+                                        : change < 0
+                                            ? "金額が不足しています"
+                                            : `¥${change}`}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                </Box>
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                    sx={{ mt: 2 }}
+                    disabled={total === 0}
+                >
+                    注文を送信
+                </Button>
             </Container>
 
             {/* ✅ 共通トースト通知 */}

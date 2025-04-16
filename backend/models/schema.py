@@ -9,3 +9,17 @@ class OrderItemIn(BaseModel):
 
 class OrderCreate(BaseModel):
     items: List[OrderItemIn]
+
+
+class MenuCreate(BaseModel):
+    name: str
+    price: int
+
+
+class MenuUpdate(BaseModel):
+    name: str
+    price: int
+
+
+class MenuDeleteRequest(BaseModel):
+    password: str
