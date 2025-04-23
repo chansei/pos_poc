@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import NavigationBar from "../components/NavigationBar";
 
-
+const getBaseUrl = () => localStorage.getItem("api_base_url") || "http://localhost:8000/api";
 
 const KitchenView = () => {
     const [orders, setOrders] = useState([]);
@@ -28,17 +28,17 @@ const KitchenView = () => {
     };
 
     const fetchOrders = async () => {
-        const res = await axios.get("http://localhost:8000/api/orders");
+        const res = await axios.get(`${getBaseUrl()}/orders`);
         setOrders(res.data);
     };
 
     const updateOrderStatus = async (orderId, status) => {
-        await axios.post(`http://localhost:8000/api/orders/${orderId}/status`, { status });
+        await axios.post(`${getBaseUrl()}/orders/${orderId}/status`, { status });
         fetchOrders();
     };
 
     const updateUnitStatus = async (unitId, status) => {
-        await axios.post(`http://localhost:8000/api/order_item_unit/${unitId}/status`, { status });
+        await axios.post(`${getBaseUrl()}/order_item_unit/${unitId}/status`, { status });
         fetchOrders();
     };
 

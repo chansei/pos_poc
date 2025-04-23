@@ -8,12 +8,14 @@ import {
 } from "@mui/material";
 import NavigationBar from "../components/NavigationBar";
 
+const getBaseUrl = () => localStorage.getItem("api_base_url") || "http://localhost:8000/api";
+
 const CallView = () => {
     const [calledOrders, setCalledOrders] = useState([]);
 
     const fetchCalledOrders = async () => {
         try {
-            const res = await axios.get("http://localhost:8000/api/calls");
+            const res = await axios.get(`${getBaseUrl()}/calls`);
             setCalledOrders(res.data);
         } catch (err) {
             console.error("呼び出し取得失敗:", err);

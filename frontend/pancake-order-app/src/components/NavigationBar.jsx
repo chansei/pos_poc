@@ -16,6 +16,7 @@ const NavigationBar = ({ title = "Pancake POS" }) => {
         { label: "キッチン画面", path: "/kitchen" },
         { label: "呼出画面", path: "/call" },
         { label: "メニュー管理", path: "/menu" },
+        { label: "購買管理", path: "/sale" },
         { label: "設定", path: "/settings" },
     ];
 

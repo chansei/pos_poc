@@ -7,6 +7,8 @@ import axios from "axios";
 import NavigationBar from "../components/NavigationBar";
 import Toast from "../components/Toast";
 
+const getBaseUrl = () => localStorage.getItem("api_base_url") || "http://localhost:8000/api";
+
 const OrderForm = () => {
     const [menuList, setMenuList] = useState([]);
     const [quantities, setQuantities] = useState({});
@@ -18,7 +20,7 @@ const OrderForm = () => {
     const [toastSeverity, setToastSeverity] = useState("info");
 
     useEffect(() => {
-        axios.get("http://localhost:8000/api/menu").then((res) => {
+        axios.get(`${getBaseUrl()}/menu`).then((res) => {
             setMenuList(res.data);
             const initQuantities = {};
             res.data.forEach((item) => {
@@ -76,7 +78,7 @@ const OrderForm = () => {
             return;
         }
 
-        await axios.post("http://localhost:8000/api/order", { items });
+        await axios.post(`${getBaseUrl()}/order`, { items });
         showToast("注文を送信しました！", "success");
 
         // 初期化
@@ -116,110 +118,109 @@ const OrderForm = () => {
                     ))}
                 </Grid>
 
-                <Box sx={{ mt: 4 }}>
-                    {/* 行 1 */}
-                    <Grid container spacing={1} sx={{ mt: 1 }}>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "1")}>1</Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "2")}>2</Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "3")}>3</Button>
-                        </Grid>
-                    </Grid>
-
-                    {/* 行 2 */}
-                    <Grid container spacing={1} sx={{ mt: 1 }}>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "4")}>4</Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "5")}>5</Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "6")}>6</Button>
-                        </Grid>
-                    </Grid>
-
-                    {/* 行 3 */}
-                    <Grid container spacing={1} sx={{ mt: 1 }}>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "7")}>7</Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "8")}>8</Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "9")}>9</Button>
-                        </Grid>
-                    </Grid>
-
-                    {/* 行 4 */}
-                    <Grid container spacing={1} sx={{ mt: 1 }}>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash("")}>AC</Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash + "0")}>0</Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Button fullWidth variant="outlined" onClick={() => setCash(cash.slice(0, -1))}>⌫</Button>
-                        </Grid>
-                    </Grid>
-                </Box>
-
-                <Box sx={{ width: "100%" }}>
-                    <Paper variant="outlined" sx={{ p: 2, width: "100%" }}>
-                        <Grid container spacing={2}>
-                            {/* 合計金額 */}
+                <Grid container spacing={2}>
+                    <Box sx={{ mt: 4 }}>
+                        {/* 行 1 */}
+                        <Grid container spacing={1} sx={{ mt: 1 }}>
                             <Grid item xs={4}>
-                                <Typography variant="subtitle2" color="text.secondary" align="center">
-                                    合計金額
-                                </Typography>
-                                <Typography variant="h6" fontWeight="bold" align="center">
-                                    ¥{calculateTotal()}
-                                </Typography>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "1")}>1</Button>
                             </Grid>
-
-                            {/* 預かり金 */}
                             <Grid item xs={4}>
-                                <Typography variant="subtitle2" color="text.secondary" align="center">
-                                    預かり金
-                                </Typography>
-                                <Typography variant="h6" fontWeight="bold" align="center">
-                                    {cash === "" ? "--" : `¥${cash}`}
-                                </Typography>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "2")}>2</Button>
                             </Grid>
-
-                            {/* お釣り */}
                             <Grid item xs={4}>
-                                <Typography variant="subtitle2" color="text.secondary" align="center">
-                                    お釣り
-                                </Typography>
-                                <Typography
-                                    variant="h6"
-                                    fontWeight="bold"
-                                    align="center"
-                                    color={
-                                        cash === "" || isNaN(parseInt(cash))
-                                            ? "text.disabled"
-                                            : change < 0
-                                                ? "error"
-                                                : "primary"
-                                    }
-                                >
-                                    {cash === "" || isNaN(parseInt(cash))
-                                        ? "--"
-                                        : change < 0
-                                            ? "金額が不足しています"
-                                            : `¥${change}`}
-                                </Typography>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "3")}>3</Button>
                             </Grid>
                         </Grid>
-                    </Paper>
-                </Box>
+
+                        {/* 行 2 */}
+                        <Grid container spacing={1} sx={{ mt: 1 }}>
+                            <Grid item xs={4}>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "4")}>4</Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "5")}>5</Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "6")}>6</Button>
+                            </Grid>
+                        </Grid>
+
+                        {/* 行 3 */}
+                        <Grid container spacing={1} sx={{ mt: 1 }}>
+                            <Grid item xs={4}>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "7")}>7</Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "8")}>8</Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "9")}>9</Button>
+                            </Grid>
+                        </Grid>
+
+                        {/* 行 4 */}
+                        <Grid container spacing={1} sx={{ mt: 1 }}>
+                            <Grid item xs={4}>
+                                <Button fullWidth variant="outlined" onClick={() => setCash("")}>AC</Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash + "0")}>0</Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button fullWidth variant="outlined" onClick={() => setCash(cash.slice(0, -1))}>⌫</Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Grid>
+
+                <Grid container spacing={2} sx={{ mt: 4 }}>
+
+                    <Box sx={{ width: "100%" }}>
+                        <Paper variant="outlined" sx={{ p: 2 }}>
+                            <Grid container spacing={2} columns={12}>
+                                <Grid item xs={4}>
+                                    <Box textAlign="center">
+                                        <Typography variant="subtitle2" color="text.secondary">
+                                            合計金額
+                                        </Typography>
+                                        <Typography variant="h6" fontWeight="bold">
+                                            ¥{calculateTotal()}
+                                        </Typography>
+                                    </Box>
+                                </Grid>
+
+                                <Grid item xs={4}>
+                                    <Box textAlign="center">
+                                        <Typography variant="subtitle2" color="text.secondary">
+                                            預かり金
+                                        </Typography>
+                                        <Typography variant="h6" fontWeight="bold">
+                                            {cash === "" ? "--" : `¥${cash}`}
+                                        </Typography>
+                                    </Box>
+                                </Grid>
+
+                                <Grid item xs={4}>
+                                    <Box textAlign="center">
+                                        <Typography variant="subtitle2" color="text.secondary">
+                                            お釣り
+                                        </Typography>
+                                        <Typography variant="h6" fontWeight="bold" color="primary">
+                                            {change === null
+                                                ? "--"
+                                                : change < 0
+                                                    ? "金額が不足しています"
+                                                    : `¥${change}`}
+                                        </Typography>
+                                    </Box>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+                    </Box>
+                </Grid>
+
+
 
                 <Button
                     variant="contained"

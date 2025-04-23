@@ -6,6 +6,7 @@ import Kitchen from "./pages/Kitchen";
 import CallScreen from "./pages/CallScreen";
 import Settings from "./pages/Settings";
 import Menu from "./pages/Menu";
+import Sale from "./pages/Sale";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/call" element={<CallScreen />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/sale" element={<Sale />} />
       </Routes>
     </BrowserRouter>
   );
